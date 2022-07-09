@@ -679,6 +679,45 @@ class MapboxMapController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Updates the [symbols] with the given [change]. The symbol must
+  /// be a current member of the [symbols] set.
+  ///
+  /// Change listeners are notified once the symbols have been updated on the
+  /// platform side.
+  ///
+  /// The returned [Future] completes once listeners have been notified.
+  Future<void> updateSymbolsOption(
+      List<Symbol> symbols, SymbolOptions change) async {
+    symbols = symbols.map((symbol) {
+      symbol.options = symbol.options.copyWith(change);
+      return symbol;
+    }).toList();
+    await symbolManager!.addAll(symbols);
+
+    notifyListeners();
+  }
+
+  /// Updates the [symbols] with the given [changes]. The symbol must
+  /// be a current member of the [symbols] set.
+  ///
+  /// Change listeners are notified once the symbols have been updated on the
+  /// platform side.
+  ///
+  /// The returned [Future] completes once listeners have been notified.
+  Future<void> updateSymbols(
+      List<Symbol> symbols, List<SymbolOptions> changes) async {
+    assert(symbols.length == changes.length);
+
+    int i = 0;
+    symbols = symbols.map((symbol) {
+      symbol.options = symbol.options.copyWith(changes[i++]);
+      return symbol;
+    }).toList();
+    await symbolManager!.addAll(symbols);
+
+    notifyListeners();
+  }
+
   /// Retrieves the current position of the symbol.
   /// This may be different from the value of `symbol.options.geometry` if the symbol is draggable.
   /// In that case this method provides the symbol's actual position, and `symbol.options.geometry` the last programmatically set position.

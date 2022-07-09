@@ -1569,9 +1569,14 @@ final class MapboxMapController
       stopListeningForLocationUpdates();
     }
 
+<<<<<<< HEAD
     if (locationComponent != null) {
       locationComponent.setLocationComponentEnabled(myLocationEnabled);
     }
+=======
+    if(locationComponent != null)
+      locationComponent.setLocationComponentEnabled(myLocationEnabled);
+>>>>>>> 1b736a5 (controller, example: add updateSymbols to update all symbols at once)
   }
 
   private void startListeningForLocationUpdates() {
